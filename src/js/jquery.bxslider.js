@@ -1091,6 +1091,7 @@
      *  - DOM event object
      */
     var onTouchStart = function(e) {
+      var parentHorizontalPadding;
       //disable slider controls while user is interacting with slides to avoid slider freeze that happens on touch devices when a slide swipe happens immediately after interacting with slider controls
       slider.controls.el.addClass('disabled');
 
@@ -1100,6 +1101,12 @@
       } else {
         // record the original position when touch starts
         slider.touch.originalPos = el.position();
+        parentHorizontalPadding = slider.viewport.innerWidth() - slider.viewport.width();
+        
+        // In case slider parent have horizontal padding recalculate position
+        if(parentHorizontalPadding > 0)
+            slider.touch.originalPos.left -= (parentHorizontalPadding/2);
+
         var orig = e.originalEvent,
         touchPoints = (typeof orig.changedTouches !== 'undefined') ? orig.changedTouches : [orig];
         // record the starting touch x, y coordinates
